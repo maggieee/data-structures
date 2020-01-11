@@ -223,9 +223,37 @@ def find_name_duplicates(filename):
 
     """
 
-    duplicate_names = set()
+    
 
     # Code goes here
+    duplicate_names = set()
+    winter_16 = set()
+    spring_16 = set()
+    summer_16 = set()
+    fall_15 = set()
+
+    # Code goes here
+    cohort_data = open(filename)
+    for line in cohort_data:
+        line = line.rstrip()
+        data = line.split('|')
+
+        if data[4] == "Winter 2016":
+            winter_16.add(data[1])
+
+        elif data[4] == "Spring 2016":
+            spring_16.add(data[1])
+
+        elif data[4] == "Summer 2016":
+            summer_16.add(data[1])
+
+        elif data[4] == "Fall 2015":
+            fall_15.add(data[1])
+
+
+    duplicate_names = fall_15 & winter_16 & spring_16 & summer_16 
+
+    cohort_data.close()
 
     return duplicate_names
 
@@ -258,15 +286,31 @@ def find_house_members_by_student_name(student_list):
 
     # Code goes here
 
-    return
+    student_name = input("Who are you looking for? ")
+    house_list = [student[1] for student in student_list]
+    cohort = [student[3] for student in student_list]
+
+    for student in student_list:
+        house = student[1]
+        cohort = student[3]
+        if student_name == student[0]:
+
+            house_and_cohort_mates = house & cohort
+            return student_name + " was in house " + house + " " + cohort + " cohort." 
+            print(house_and_cohort_mates)
+
+            # student[1] & student[3]
+
+
+    return "Student not found."
 
 
 #############################################################################
 # Here is some useful code to run these functions without doctests!
 
 all_students_data = all_students_tuple_list("cohort_data.txt")
-print(find_cohort_by_student_name(all_students_data))
-# find_house_members_by_student_name(all_students_data)
+# print(find_cohort_by_student_name(all_students_data))
+print(find_house_members_by_student_name(all_students_data))
 
 
 ##############################################################################
